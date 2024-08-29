@@ -83,7 +83,9 @@ function ProductItem({ product }) {
         >
          {isLoading ?<FaSpinner className="animate-spin"/> :' + Add'}
         </button>
-        <FaHeart onClick={()=> addWish(product?._id)} className="text-3xl focus:text-red-600" />
+      <span>
+      <FaHeart onClick={()=> addWish(product?._id)} className="text-3xl focus:text-red-600" />
+      </span>
       </div>
     </div>
   );
