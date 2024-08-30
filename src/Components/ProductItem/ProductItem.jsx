@@ -8,20 +8,19 @@ import toast from "react-hot-toast";
 import { FaHeart } from "react-icons/fa6";
 import Loading from "../Loading/Loading";
 
-
 function ProductItem({ product }) {
-  const [isLoading, setIsLoading] = useState(false)
-  const { addToCart, setCartItem ,addToWishList} = useContext(cartContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [favoriteProduct, setFavoriteProduct] = useState({});
+  const { addToCart, setCartItem, addToWishList } = useContext(cartContext);
   async function addItem(id) {
-    setIsLoading(true)
+    setIsLoading(true);
     const response = await addToCart(id);
     console.log(response);
     if (response.data.status == "success") {
       setCartItem(response.data.numOfCartItems);
-      setIsLoading(false)
+      setIsLoading(false);
       // toast.success('add!' ,{})
 
-      
       toast.success("It has been successfully added.", {
         duration: 3000,
         position: "top-right",
@@ -37,9 +36,13 @@ function ProductItem({ product }) {
     const response = await addToWishList(id);
     console.log(response);
     if (response.data.status == "success") {
+      setFavoriteProduct({
+        ...favoriteProduct,
+        [id]: !favoriteProduct[id],
+      });
       toast.success("It has been successfully added.", {
         duration: 3000,
-        icon:<FaHeart className="text-red-700"/>,
+        icon: <FaHeart className="text-red-700" />,
         position: "top-right",
         style: {
           background: "green",
@@ -50,10 +53,9 @@ function ProductItem({ product }) {
     }
   }
 
-
   return (
     <div className="cursor-pointer product trans position: relative rounded-md overflow-hidden hover:shadow-xl hover:shadow-blue-500/50 p-4 my-10 mx-3 transition duration-500 ease-in-out">
-      <Link to={`/productDetails/${product._id}`}>
+      <Link to={`/productDetails/${product?._id}`}>
         <div className="">
           <img
             src={product?.imageCover}
@@ -77,15 +79,21 @@ function ProductItem({ product }) {
       </Link>
       <div className="flex justify-between items-center mt-3">
         <button
-         disabled={isLoading}
+          disabled={isLoading}
           onClick={() => addItem(product?._id)}
           className=" font-serif btn rounded-lg bg-green-600 text-white px-14 py-1"
         >
-         {isLoading ?<FaSpinner className="animate-spin"/> :' + Add'}
+          {isLoading ? <FaSpinner className="animate-spin" /> : " + Add"}
         </button>
-      <span>
-      <FaHeart onClick={()=> addWish(product?._id)} className="text-3xl focus:text-red-600" />
-      </span>
+        <span onClick={() => addWish(product?._id)}>
+          <FaHeart
+            className={`fa-regular fa-heart text-3xl ${
+              favoriteProduct[product?._id]
+                ? "fas text-red-600"
+                : "far text-green-500"
+            }`}
+          />
+        </span>
       </div>
     </div>
   );
