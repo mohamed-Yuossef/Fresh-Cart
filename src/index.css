@@ -181,3 +181,13 @@
     opacity: 0;
   }
 }
+
+.active{
+  border-bottom: black;
+
+  
+}
+.Login{
+
+  box-shadow: 2px 10px 10px 2px rgba(10, 10, 10, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

@@ -1,11 +1,24 @@
 import { useContext, useState } from "react";
 import Style from "./ProductItem.module.css";
 import { useEffect } from "react";
-import { FaSpinner, FaStar } from "react-icons/fa";
+import {
+  FaCartPlus,
+  FaHeartbeat,
+  FaHeartBroken,
+  FaRegHeart,
+  FaSpinner,
+  FaStar,
+} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { cartContext } from "../../Context/cartContext";
 import toast from "react-hot-toast";
-import { FaHeart } from "react-icons/fa6";
+import {
+  FaHeart,
+  FaHeartCircleBolt,
+  FaHeartCircleExclamation,
+  FaHeartCrack,
+  FaHeartPulse,
+} from "react-icons/fa6";
 import Loading from "../Loading/Loading";
 
 function ProductItem({ product }) {
@@ -55,6 +68,15 @@ function ProductItem({ product }) {
 
   return (
     <div className="cursor-pointer product trans position: relative rounded-md overflow-hidden hover:shadow-xl hover:shadow-blue-500/50 p-4 my-10 mx-3 transition duration-500 ease-in-out">
+      <span disabled={isLoading} onClick={() => addWish(product?._id)}>
+        <FaHeart
+          className={`ms-auto fa-regular fa-heart text-3xl ${
+            favoriteProduct[product?._id]
+              ? "far text-red-600 fa-heart"
+              : "far text-green-500"
+          }`}
+        />
+      </span>
       <Link to={`/productDetails/${product?._id}`}>
         <div className="">
           <img
@@ -77,23 +99,19 @@ function ProductItem({ product }) {
           </div>
         </div>
       </Link>
-      <div className="flex justify-between items-center mt-3">
-        <button
-          disabled={isLoading}
+      <div className="w-full flex justify-between items-center mt-3">
+        <div
           onClick={() => addItem(product?._id)}
-          className=" font-serif btn rounded-lg bg-green-600 text-white px-14 py-1"
+          className="w-full flex justify-between items-center font-serif btn rounded-lg bg-green-600 text-white px-14 py-1"
         >
-          {isLoading ? <FaSpinner className="animate-spin" /> : " + Add"}
-        </button>
-        <span onClick={() => addWish(product?._id)}>
-          <FaHeart
-            className={`fa-regular fa-heart text-3xl ${
-              favoriteProduct[product?._id]
-                ? "fas text-red-600"
-                : "far text-green-500"
-            }`}
-          />
-        </span>
+          {isLoading ? (
+            <FaSpinner className="animate-spin" />
+          ) : (
+            <button className="w-full flex gap-1 justify-center items-center">
+              <FaCartPlus className="" /> Add
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

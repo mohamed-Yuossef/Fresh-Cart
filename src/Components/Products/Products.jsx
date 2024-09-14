@@ -47,7 +47,7 @@ function Products() {
                 <title>products</title>
             </Helmet>
         </div>
-        <div className="grid mt-24 gap-4 sm:grid-cols-2 p-5 md:grid-cols-3 xl:grid-cols-4">
+        <div className="grid mt-24 gap-4 sm:grid-cols-2 p-5 md:grid-cols-2 xl:grid-cols-4">
           {data.map((p) => (
             <ProductItem key={p._id} product={p} />
           ))}

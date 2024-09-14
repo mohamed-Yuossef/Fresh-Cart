@@ -2,17 +2,33 @@ import { useContext, useRef, useState } from "react";
 import Style from "./Navbar.module.css";
 import { useEffect } from "react";
 import logo from "../../assets/imgs/logo.svg";
-import { FaFacebook, FaTiktok, FaTwitter, FaYoutube } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+
+import {
+  FaCarAlt,
+  FaCaretRight,
+  FaFacebook,
+  FaHeart,
+  FaTiktok,
+  FaTwitter,
+  FaYoutube,
+} from "react-icons/fa";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { CounterContext } from "../../Context/CounterContext";
 import { UserContext } from "../../Context/UserContext";
 import { cartContext } from "../../Context/cartContext";
-import { FaCableCar, FaCartShopping } from "react-icons/fa6";
+import {
+  FaCableCar,
+  FaCartFlatbed,
+  FaCartFlatbedSuitcase,
+  FaCartPlus,
+  FaCartShopping,
+  FaCarTunnel,
+} from "react-icons/fa6";
 import Cart from "../Cart/Cart";
 
 //! ????????Navbar
 function Navbar() {
-  const { cartItem } = useContext(cartContext);
+  const { cartItem, wishLastItem } = useContext(cartContext);
   const { counter } = useContext(CounterContext);
   const { token, setToken } = useContext(UserContext);
 
@@ -69,7 +85,7 @@ function Navbar() {
                 <li>
                   <Link
                     to=""
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                    className="active block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
                   >
                     Home
                   </Link>
@@ -142,15 +158,30 @@ function Navbar() {
 
             {token && (
               <>
-                <li >
-                  <Link to='Cart' className="relative flex cursor-pointer py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent">
-                    <FaCartShopping className="text-3xl" />
+                <li>
+                  <Link
+                    to="Cart"
+                    className="relative flex cursor-pointer py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                  >
+                    <FaCartPlus className="text-3xl text-green-500" />
                     <span className="absolute w-7 text-center rounded-xl items-center -right-3 bottom-4 z-20 text-md bg-green-600 text-white">
                       {" "}
                       {cartItem}
                     </span>
                   </Link>
                 </li>
+                {/* <li>
+                  <Link
+                    to="WishList"
+                    className="relative flex cursor-pointer py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                  >
+                    <FaHeart className="text-3xl text-green-500" />
+                    <span className="absolute w-7 text-center rounded-xl items-center -right-3 bottom-4 z-20 text-md bg-green-600 text-white">
+                      {" "}
+                      {wishLastItem}
+                    </span>
+                  </Link>
+                </li> */}
                 <li onClick={logOut}>
                   <span className="block cursor-pointer py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent">
                     SignOut

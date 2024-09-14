@@ -11,14 +11,12 @@ export default function CartContextProvider({ children }) {
   };
   console.log(token);
 
-  
   function getUseCart() {
- 
     return axios
       .get("https://ecommerce.routemisr.com/api/v1/cart", {
         headers: headers,
       })
-  
+
       .then((data) => data)
       .catch((err) => err);
   }
@@ -46,7 +44,6 @@ export default function CartContextProvider({ children }) {
       .catch((err) => err);
   }
   function addToWishList(pId) {
-
     return axios
       .post(
         "https://ecommerce.routemisr.com/api/v1/wishlist",
@@ -59,7 +56,6 @@ export default function CartContextProvider({ children }) {
       )
       .then((data) => data)
       .catch((err) => err);
-    
   }
 
   function UpdateItemCart(id, count) {
@@ -83,7 +79,6 @@ export default function CartContextProvider({ children }) {
       })
       .then((data) => data)
       .catch((err) => err);
-      
   }
   function deleteWishList(id) {
     return axios
@@ -117,18 +112,23 @@ export default function CartContextProvider({ children }) {
       .catch((err) => err);
   }
   const [cartItem, setCartItem] = useState(0);
+  // const [wishLastItem, setWishLastItem] = useState(0);
+
   async function getCart() {
     const response = await getUseCart();
+    console.log(response);
     if (response.data.status == "success") {
       setCartItem(response.data.numOfCartItems);
       console.log({ cartItem });
     }
   }
   async function getWish() {
- 
     const response = await getWishList();
-   console.log(response);
-  
+    console.log(response);
+    // if (response.data.status == "success") {
+    //   setWishLastItem(response.data.count);
+    //   console.log({ wishLastItem });
+    // }
   }
   useEffect(() => {
     getCart();
@@ -149,8 +149,8 @@ export default function CartContextProvider({ children }) {
         addToCart,
         addToWishList,
         UpdateItemCart,
-        deleteItem,
         deleteWishList,
+        deleteItem,
       }}
     >
       {children}

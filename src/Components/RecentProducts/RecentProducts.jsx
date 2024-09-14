@@ -22,7 +22,7 @@ const {isError , error , isLoading , data }= UseProduct();
     return <h3>{error}</h3>
   }
   return (
-    <div className="grid mt-10 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 py-1">
+    <div className="grid mt-10 gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 py-1">
       {data?.map((p) => (
         <ProductItem key={p._id} product={p} />
       ))}
