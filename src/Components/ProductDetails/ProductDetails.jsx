@@ -84,13 +84,13 @@ function ProductDetails() {
         <Loading />
       ) : (
         <div className="mt-36 p-5">
-          <div className="grid gap-4 sm:grid-cols-12">
-            <div className="sm:col-span-full md:col-span-6 lg:col-span-4 ">
+          <div className="md:grid gap-4 sm:grid-cols-12 ">
+            <div className="col-span-full md:col-span-6 lg:col-span-4 ">
               <Slider {...settings}>
                 {productDetails?.images.map((src) => (
                   <img
                     src={src}
-                    class="sm:w-min md:w-full object-contain "
+                    class="w-[32px] md:w-full object-contain "
                     alt=""
                   />
                 ))}
@@ -115,7 +115,7 @@ function ProductDetails() {
                   onClick={() => addItem(productDetails?.id)}
                   className="w-4/5 bg-green-600 py-1 text-white rounded-md"
                 >
-                  {isLoading ? <Loading/>: "Add To Cart"}
+                  {isLoading ? <Loading /> : "Add To Cart"}
                 </button>
                 <button
                   onClick={() => addList(productDetails?.id)}

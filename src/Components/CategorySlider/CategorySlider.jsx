@@ -9,16 +9,22 @@ function CategorySlider() {
   const [categories, setCategories] = useState([]);
 
   const settings = {
-    dots: false,
+    className: "center",
+    centerMode: true,
     infinite: true,
+    centerPadding: "60px",
+    slidesToShow: 3,
     speed: 500,
-    slidesToScroll: 3,
-    arrows: false,
-    slidesToShow: 6,
-    autoplay: false,
-    autoplaySpeed: 1000,
-    nextArrow: true,
-    prevArrow: true,
+    // dots: false,
+    // infinite: true,
+    // speed: 500,
+    // slidesToScroll: 3,
+    // arrows: false,
+    // slidesToShow: 6,
+    // autoplay: false,
+    // autoplaySpeed: 1000,
+    // nextArrow: true,
+    // prevArrow: true,
     // slickNext:true,
 
     responsive: [
@@ -61,7 +67,8 @@ function CategorySlider() {
     return <Loading />;
   }
   return (
-    <Slider {...settings}>
+<div className="slider-container">
+<Slider {...settings}>
       {categories.map((c) => (
         <div key={c._id} className=" p-2">
           <img className="h-[200px] w-full object-cover" src={c.image} alt="" />
@@ -69,6 +76,7 @@ function CategorySlider() {
         </div>
       ))}
     </Slider>
+</div>
   );
 }
 
