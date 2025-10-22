@@ -1,10 +1,11 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
-import Loading from "../Components/Loading/Loading";
 
 export const cartContext = createContext();
 
 export default function CartContextProvider({ children }) {
+  const [cartItem, setCartItem] = useState(0);
+  const [wishListNum, setWishListNum] = useState(0);
   const token = localStorage.getItem("token");
   const headers = {
     token,
@@ -17,7 +18,10 @@ export default function CartContextProvider({ children }) {
         headers: headers,
       })
 
-      .then((data) => data)
+      .then((data) => {
+        setCartItem(data.data.numOfCartItems);
+        return data;
+      })
       .catch((err) => err);
   }
   function getWishList() {
@@ -26,7 +30,11 @@ export default function CartContextProvider({ children }) {
         headers: headers,
       })
 
-      .then((data) => data)
+      .then((data) => {
+        // console.log(data.data.data.length);
+        setWishListNum(data.data.data.length);
+        return data;
+      })
       .catch((err) => err);
   }
   function addToCart(pId) {
@@ -40,7 +48,10 @@ export default function CartContextProvider({ children }) {
           headers: headers,
         }
       )
-      .then((data) => data)
+      .then((data) => {
+        setCartItem(data.data.numOfCartItems);
+        return data;
+      })
       .catch((err) => err);
   }
   function addToWishList(pId) {
@@ -54,7 +65,10 @@ export default function CartContextProvider({ children }) {
           headers: headers,
         }
       )
-      .then((data) => data)
+      .then((data) => {
+        setWishListNum(data.data.data.length);
+        return data;
+      })
       .catch((err) => err);
   }
 
@@ -69,7 +83,10 @@ export default function CartContextProvider({ children }) {
           headers: headers,
         }
       )
-      .then((data) => data)
+      .then((data) => {
+        setCartItem(data.data.numOfCartItems);
+        return data;
+      })
       .catch((err) => err);
   }
   function deleteItem(id) {
@@ -77,7 +94,10 @@ export default function CartContextProvider({ children }) {
       .delete("https://ecommerce.routemisr.com/api/v1/cart/" + id, {
         headers: headers,
       })
-      .then((data) => data)
+      .then((data) => {
+        setCartItem(data.data.numOfCartItems);
+        return data;
+      })
       .catch((err) => err);
   }
   function deleteWishList(id) {
@@ -85,7 +105,10 @@ export default function CartContextProvider({ children }) {
       .delete("https://ecommerce.routemisr.com/api/v1/wishlist/" + id, {
         headers: headers,
       })
-      .then((data) => data)
+      .then((data) => {
+        setWishListNum(data.data.data.length);
+        return data;
+      })
       .catch((err) => err);
   }
   function deleteAllProduct() {
@@ -93,7 +116,10 @@ export default function CartContextProvider({ children }) {
       .delete("https://ecommerce.routemisr.com/api/v1/cart", {
         headers: headers,
       })
-      .then((data) => data)
+      .then((data) => {
+        setCartItem(data.data.numOfCartItems);
+        return data;
+      })
       .catch((err) => err);
   }
 
@@ -111,7 +137,7 @@ export default function CartContextProvider({ children }) {
       .then((data) => data)
       .catch((err) => err);
   }
-  const [cartItem, setCartItem] = useState(0);
+
   // const [wishLastItem, setWishLastItem] = useState(0);
 
   async function getCart() {
@@ -119,23 +145,17 @@ export default function CartContextProvider({ children }) {
     console.log(response);
     if (response.data.status == "success") {
       setCartItem(response.data.numOfCartItems);
-      console.log({ cartItem });
     }
   }
-  async function getWish() {
-    const response = await getWishList();
-    console.log(response);
-    // if (response.data.status == "success") {
-    //   setWishLastItem(response.data.count);
-    //   console.log({ wishLastItem });
-    // }
-  }
+  // async function getWish() {
+  //   const response = await getWishList();
+  // }
   useEffect(() => {
     getCart();
   }, []);
-  useEffect(() => {
-    getWish();
-  }, []);
+  // useEffect(() => {
+  //   getWish();
+  // }, []);
 
   return (
     <cartContext.Provider
@@ -151,6 +171,7 @@ export default function CartContextProvider({ children }) {
         UpdateItemCart,
         deleteWishList,
         deleteItem,
+        wishListNum,
       }}
     >
       {children}

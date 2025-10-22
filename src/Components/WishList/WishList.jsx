@@ -1,8 +1,6 @@
 import { useContext, useState } from "react";
 import { useEffect } from "react";
 import { cartContext } from "../../Context/cartContext";
-import { FaCaretDown, FaCartShopping, FaTrashCan } from "react-icons/fa6";
-import CartItem from "../cartItem/cartItem";
 import toast from "react-hot-toast";
 import Loading from "../Loading/Loading";
 import { Link } from "react-router-dom";
@@ -31,6 +29,7 @@ function WishLast() {
     const response = await deleteWishList(id);
     if (response.data.status == "success") {
       setWishDetails(response.data.data);
+      getLoggedWish()
       toast.success("Deleted");
       setIsLoading(false);
     }
@@ -61,23 +60,28 @@ function WishLast() {
           <table className=" shadow-lg w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <tbody>
               {wishDetails == "" ? (
-                <div className=" h-[50vh] w-full flex flex-col items-center">
-                  <div className="bg-slate-100 w-[150px] h-[150px] flex justify-center items-center rounded-full">
-                    <FaCartPlus className="text-[100px] text-center text-green-600" />
+                <tr>
+                <td colSpan="5">
+                  <div className="h-[50vh] w-full flex flex-col items-center justify-center">
+                    <div className="bg-slate-100 w-[150px] h-[150px] flex justify-center items-center rounded-full">
+                      <FaCartPlus className="text-[100px] text-center text-green-600" />
+                    </div>
+                    <h4 className="text-green-400 text-center mt-10 font-sans">
+                      The wish list is empty
+                    </h4>
+                    <Link
+                      to={"/"}
+                      className="mt-6 bg-green-400 text-white text-lg px-5 py-1 rounded-lg font-serif"
+                    >
+                      Add Now
+                    </Link>
                   </div>
-                  <h4 className="text-green-400 text-center mt-10 font-sans">
-                    The wish list is empty
-                  </h4>
-                  <Link
-                    to={"/"}
-                    className="mt-6 bg-green-400 text-white text-lg px-5 py-1 rounded-lg font-serif"
-                  >
-                    Add Now
-                  </Link>
-                </div>
+                </td>
+              </tr>
               ) : (
                 wishDetails?.map((p) => (
                   <WishLastItem
+                  key={p._id}
                     deleteItemFromWish={deleteItemFromWish}
                     price={p.price}
                     image={p.imageCover}

@@ -34,7 +34,7 @@ function Categories() {
         <div className="grid mt-24 gap-4 sm:grid-cols-2 p-5 md:grid-cols-3 xl:grid-cols-3">
           {categoriesItem.map((p) => (
             <div
-              key={p}
+              key={p._id}
               className="border border-gray-300 rounded-lg text-center  hover:shadow-xl hover:shadow-blue-500/50 transition duration-500 ease-in-out"
             >
               <div className="">

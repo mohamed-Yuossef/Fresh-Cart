@@ -65,19 +65,13 @@ function ProductDetails() {
     }
   }
   const { id } = useParams();
-  const {
-    isLoading,
-    isError,
-    error,
-    data: productDetails,
-  } = useQuery({
+  const { isLoading, data: productDetails } = useQuery({
     queryKey: ["productDetails", id],
     queryFn: () =>
       axios.get("https://ecommerce.routemisr.com/api/v1/products/" + id),
     select: (data) => data.data.data,
   });
 
-  //!!
   return (
     <>
       {isLoading ? (
@@ -89,8 +83,9 @@ function ProductDetails() {
               <Slider {...settings}>
                 {productDetails?.images.map((src) => (
                   <img
+                    key={src}
                     src={src}
-                    class="w-[32px] md:w-full object-contain "
+                    className="w-[32px] md:w-full object-contain "
                     alt=""
                   />
                 ))}

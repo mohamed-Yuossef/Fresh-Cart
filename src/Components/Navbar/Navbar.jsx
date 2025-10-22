@@ -1,11 +1,6 @@
-import { useContext, useRef, useState } from "react";
-import Style from "./Navbar.module.css";
-import { useEffect } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import logo from "../../assets/imgs/logo.svg";
-
 import {
-  FaCarAlt,
-  FaCaretRight,
   FaFacebook,
   FaHeart,
   FaTiktok,
@@ -13,279 +8,205 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { CounterContext } from "../../Context/CounterContext";
 import { UserContext } from "../../Context/UserContext";
 import { cartContext } from "../../Context/cartContext";
-import {
-  FaCableCar,
-  FaCartFlatbed,
-  FaCartFlatbedSuitcase,
-  FaCartPlus,
-  FaCartShopping,
-  FaCarTunnel,
-} from "react-icons/fa6";
-import Cart from "../Cart/Cart";
+import { FaCartPlus } from "react-icons/fa6";
 
-//! ????????Navbar
 function Navbar() {
-  const { cartItem, wishLastItem } = useContext(cartContext);
-  const { counter } = useContext(CounterContext);
+  const { cartItem, wishListNum } = useContext(cartContext);
   const { token, setToken } = useContext(UserContext);
-
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   function logOut() {
     setToken(null);
     navigate("/login");
   }
 
-  useEffect(() => {
-    console.log("Mounting Navbar");
-  }, []);
+  // يغلق المينيو بعد ما أضغط على أي لينك
+  function handleNavClick() {
+    setIsMenuOpen(false);
+  }
+
   return (
-    <nav className="text-white fixed w-full items-center z-10 top-0 start-0 bg-gray-100 dark:bg-gray-600 border-gray-200">
-      <div className="max-w-screen-xl flex gap-5 flex-wrap items-center mx-auto p-3 mt-1">
-        <a className="flex  text-3xl items-center space-x-3 rtl:space-x-reverse">
-          <img src={logo} alt="" />
-          {/* {counter} */}
+    <nav className="text-white fixed w-full items-center z-10 top-0 start-0 bg-gray-200/70 dark:bg-gray-600 border-gray-200">
+      <div className="max-w-screen-xl flex gap-5 flex-wrap justify-between items-center mx-auto px-3 py-5 mt-1">
+        <a className="flex text-3xl items-center space-x-3 rtl:space-x-reverse">
+          <img src={logo} alt="logo" />
         </a>
-        {/* !toggler */}
+
+        {/* زر المينيو للموبايل */}
         <button
-          data-collapse-toggle="navbar-default"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
           type="button"
-          className=" inline-flex ms-auto items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-xl xl:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-default"
-          aria-expanded="false"
+          className="inline-flex ms-auto items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-xl xl:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
         >
           <span className="sr-only">Open main menu</span>
           <svg
-            className="w-5 h-5"
-            aria-hidden="true"
+            className="w-6 h-6"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
-            viewBox="0 0 17 14"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M1 1h15M1 7h15M1 13h15"
-            />
+            {isMenuOpen ? (
+              // ❌ أيقونة الإغلاق
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            ) : (
+              // ☰ أيقونة الفتح
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            )}
           </svg>
         </button>
 
-        {/* ! ul */}
+        {/* قائمة الروابط */}
         <div
-          className="hidden w-full grow items-center xl:flex justify-between xl:w-auto "
           id="navbar-default"
+          className={`${
+            isMenuOpen ? "block" : "hidden"
+          } w-full xl:flex xl:items-center xl:justify-between xl:gap-6  xl:w-auto transition-all duration-300`}
         >
-          <ul className="font-medium flex sm:ms-1 items-start flex-col p-4 xl:p-0 mt-4 border border-gray-100 rounded-xl  xl:flex-row xl:space-x-8 rtl:space-x-reverse xl:mt-0 xl:border-0 text-white   dark:border-gray-700">
+          <ul className="font-medium flex flex-col xl:flex-row justify-between items-center rtl:space-x-reverse  xl:p-0 mt-4 border border-gray-100 rounded-xl xl:mt-0 xl:border-0 dark:border-gray-700 bg-gray-200/90 dark:bg-gray-800 xl:bg-transparent">
             {token && (
               <>
                 <li>
-                  <Link
-                    to=""
-                    className="active block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                  <NavLink
+                    onClick={handleNavClick}
+                    to="/"
+                    className="block py-2 px-3 text-gray-900 xl:hover:text-green-700 dark:text-white"
                   >
                     Home
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <Link
-                    to="Products"
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                  <NavLink
+                    onClick={handleNavClick}
+                    to="products"
+                    className="block py-2 px-3 text-gray-900 xl:hover:text-green-700 dark:text-white"
                   >
                     Products
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <Link
+                  <NavLink
+                    onClick={handleNavClick}
                     to="categories"
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                    className="block py-2 px-3 text-gray-900 xl:hover:text-green-700 dark:text-white"
                   >
                     Categories
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <Link
+                  <NavLink
+                    onClick={handleNavClick}
                     to="brands"
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                    className="block py-2 px-3 text-gray-900 xl:hover:text-green-700 dark:text-white"
                   >
                     Brands
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <Link
+                  <NavLink
+                    onClick={handleNavClick}
                     to="cart"
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                    className="block py-2 px-3 text-gray-900 xl:hover:text-green-700 dark:text-white"
                   >
                     Cart
-                  </Link>
+                  </NavLink>
                 </li>
                 <li>
-                  <Link
-                    to="wishList"
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                  <NavLink
+                    onClick={handleNavClick}
+                    to="wishlist"
+                    className="block py-2 px-3 text-gray-900 xl:hover:text-green-700 dark:text-white"
                   >
-                    wish list
-                  </Link>
+                    Wishlist
+                  </NavLink>
                 </li>
               </>
             )}
           </ul>
 
-          <ul className=" font-medium flex items-center flex-col p-4 xl:p-0 mt-4 border border-gray-100 rounded-xl  xl:flex-row xl:space-x-8 rtl:space-x-reverse xl:mt-0 xl:border-0  dark:border-gray-700">
-            {!token && (
-              <>
-                <li>
-                  <Link
-                    to="login"
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
-                  >
-                    Login
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="register"
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
-                  >
-                    Register
-                  </Link>
-                </li>
-              </>
-            )}
-
+          <ul className="font-medium flex flex-col justify-center items-center xl:flex-row xl:space-x-8 p-4 xl:p-0 mt-4 border border-gray-100 rounded-xl xl:mt-0 xl:border-0 dark:border-gray-700 bg-gray-200/90 dark:bg-gray-800 xl:bg-transparent">
             {token && (
               <>
                 <li>
-                  <Link
-                    to="Cart"
-                    className="relative flex cursor-pointer py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                  <NavLink
+                    onClick={handleNavClick}
+                    to="cart"
+                    className="relative flex items-center py-2"
                   >
-                    <FaCartPlus className="text-3xl text-green-500" />
-                    <span className="absolute w-7 text-center rounded-xl items-center -right-3 bottom-4 z-20 text-md bg-green-600 text-white">
-                      {" "}
+                    <FaCartPlus className="text-2xl text-green-500" />
+                    <span className="absolute -right-2 -top-1 text-sm bg-green-600 text-white rounded-full px-2">
                       {cartItem}
                     </span>
-                  </Link>
+                  </NavLink>
                 </li>
-                {/* <li>
-                  <Link
-                    to="WishList"
-                    className="relative flex cursor-pointer py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                <li>
+                  <NavLink
+                    onClick={handleNavClick}
+                    to="wishlist"
+                    className="relative flex items-center py-2 "
                   >
-                    <FaHeart className="text-3xl text-green-500" />
-                    <span className="absolute w-7 text-center rounded-xl items-center -right-3 bottom-4 z-20 text-md bg-green-600 text-white">
-                      {" "}
-                      {wishLastItem}
+                    <FaHeart className="text-2xl text-green-500" />
+                    <span className="absolute -right-2 -top-1 text-sm bg-green-600 text-white rounded-full px-2">
+                      {wishListNum}
                     </span>
-                  </Link>
-                </li> */}
-                <li onClick={logOut}>
-                  <span className="block cursor-pointer py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent">
-                    SignOut
-                  </span>
+                  </NavLink>
+                </li>
+
+                <li className="flex gap-4">
+                  {" "}
+                  <Link
+                    to="#"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                  >
+                    {" "}
+                    <FaFacebook />{" "}
+                  </Link>{" "}
+                  <Link
+                    to="#"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                  >
+                    {" "}
+                    <FaTwitter />{" "}
+                  </Link>{" "}
+                  <Link
+                    to="#"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                  >
+                    {" "}
+                    <FaYoutube />{" "}
+                  </Link>{" "}
+                  <Link
+                    to="#"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
+                  >
+                    {" "}
+                    <FaTiktok />{" "}
+                  </Link>{" "}
                 </li>
               </>
             )}
-
-            <li>
-              <ToggleMode />
-            </li>
-
-            <li className="flex gap-4">
-              <a
-                to="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
-              >
-                <FaFacebook />
-              </a>
-              <a
-                to="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
-              >
-                <FaTwitter />
-              </a>
-              <a
-                to="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
-              >
-                <FaYoutube />
-              </a>
-              <a
-                to="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 xl:hover:bg-transparent xl:border-0 xl:hover:text-green-700 xl:p-0 dark:text-white xl:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-white xl:dark:hover:bg-transparent"
-              >
-                <FaTiktok />
-              </a>
+            <li onClick={logOut}>
+              <span className="cursor-pointer py-2 px-3 text-gray-900 dark:text-white">
+                SignOut
+              </span>
             </li>
           </ul>
         </div>
       </div>
     </nav>
-  );
-}
-
-function ToggleMode() {
-  //! re
-  // ! true
-
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const ref = useRef(document.querySelector("html"));
-
-  //! updating ==> state
-
-  //! side effects
-  useEffect(() => {
-    toggleDarkFn();
-  }, [isDarkMode]);
-
-  function toggleDarkFn() {
-    ref.current.classList.toggle("dark", isDarkMode);
-  }
-  //   console.log(isDarkMode);
-  return (
-    <>
-      {/* <button onClick={() =>setIsDarkMode(!isDarkMode)}>
-
-        {isDarkMode ? <MdDarkMode className="text-white" /> : <MdOutlineDarkMode className="bg-white" />}
-      </button> */}
-
-      <button
-        onClick={() => setIsDarkMode(!isDarkMode)}
-        id="theme-toggle"
-        type="button"
-        className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-xl text-sm p-2.5"
-      >
-        {isDarkMode ? (
-          <svg
-            id="theme-toggle-dark-icon"
-            className=" w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-          </svg>
-        ) : (
-          <svg
-            id="theme-toggle-light-icon"
-            className=" w-5 h-5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-              fillRule="evenodd"
-              clipRule="evenodd"
-            />
-          </svg>
-        )}
-      </button>
-    </>
   );
 }
 

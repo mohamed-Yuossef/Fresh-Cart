@@ -28,8 +28,8 @@ function Brands() {
             </Helmet>
         </div>
   <div className="grid mt-24 gap-4 sm:grid-cols-2 p-5 md:grid-cols-3 xl:grid-cols-4">
-      {bransItem.map((p) => (
-        <div key={p} className="border border-gray-400 rounded-lg text-center  hover:shadow-xl hover:shadow-blue-500/50 p-3 transition duration-500 ease-in-out">
+      {bransItem.map((p, index) => (
+        <div key={index} className="border border-gray-400 rounded-lg text-center  hover:shadow-xl hover:shadow-blue-500/50 p-3 transition duration-500 ease-in-out">
           <div className="">
             <img className="w-full" src={p.image} alt="" />
 

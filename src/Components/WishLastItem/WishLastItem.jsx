@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
 import { useEffect } from "react";
-import Cart from "../Cart/Cart";
+
 
 import { FaSpinner, FaTrash } from "react-icons/fa";
 import { cartContext } from "../../Context/cartContext";
 import toast from "react-hot-toast";
-import Loading from "../Loading/Loading";
+
 import { FaCartPlus } from "react-icons/fa6";
 
 function WishLastItem({ price, deleteItemFromWish, image, title, id }) {
@@ -14,6 +14,7 @@ function WishLastItem({ price, deleteItemFromWish, image, title, id }) {
   }
   const { addToCart, setCartItem } = useContext(cartContext);
   const [isLoading, setIsLoading] = useState(false);
+  
   async function addCart(id) {
     setIsLoading(true);
     const response = await addToCart(id);
@@ -32,7 +33,7 @@ function WishLastItem({ price, deleteItemFromWish, image, title, id }) {
       });
     }
   }
-  useEffect(() => {}, []);
+
   return (
     <>
       <tr className="p-3 flex flex-wrap justify-between items-center hover:shadow-2xl bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">

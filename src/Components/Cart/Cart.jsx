@@ -5,14 +5,14 @@ import { FaCartPlus, FaTrashCan } from "react-icons/fa6";
 import CartItem from "../cartItem/cartItem";
 import toast from "react-hot-toast";
 import Loading from "../Loading/Loading";
-import UseProduct from "../../Hooks/useProduct";
+
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+
 import { Helmet } from "react-helmet";
 function Cart() {
   const [isLoading, setIsLoading] = useState(false);
   const { cartItem, setCartItem } = useContext(cartContext);
-  const { wishLastItem, setWishLastItem } = useContext(cartContext);
+
   const [cartDetails, setCartDetails] = useState(null);
   const { getUseCart, UpdateItemCart, deleteItem, deleteAllProduct } =
     useContext(cartContext);
@@ -74,16 +74,16 @@ function Cart() {
         <Loading />
       ) : (
         <div className="relative overflow-x-auto sm:rounded-lg p-5 mt-20">
-          <div className="flex justify-between items-center">
+          {/* <div className="flex justify-between items-center">
             <h1 className="font-normal">Cart Shop</h1>
             <h3 className="font-semibold">
               Total number fo Items :{" "}
-              <h3 className="text-green-600 inline-flex">{cartItem}</h3>
+              <p className="text-green-600 inline-flex">{cartItem}</p>
             </h3>
-          </div>
+          </div> */}
           {cartDetails?.totalCartPrice == 0 ? (
-            <div className="mt-16 shadow-lg bg-white h-[50vh] w-full flex flex-col items-center">
-              <div className="my-7 bg-slate-100 w-[150px] h-[150px] flex justify-center items-center rounded-full">
+            <div className="mt-16 shadow-lg  h-[50vh] w-full flex flex-col items-center">
+              <div className="my-7  flex justify-center items-center rounded-full">
                 <FaCartPlus className="z-[2] text-[100px] text-center text-green-600" />
               </div>
               <h4 className="text-green-400 text-center mt-10">
@@ -99,20 +99,20 @@ function Cart() {
           ) : (
             <div>
               <div className="flex justify-between w-full items-center my-7 ">
-                <div className="font-mono text-2xl py-3 px-10 ">
+                <div className="hidden md:block font-mono md:text-2xl py-3 px-10 ">
                   total price:{" "}
                   <span className="text-green-600 w-full">
                     {cartDetails?.totalCartPrice}
                   </span>
                 </div>
-                <div>
+                <div className="hidden md:flex">
                   <button className="text-clip font-serif text-lg rounded-md bg-green-600 px-7 py-3 text-white">
                     <Link to={"/checkout/" + cartDetails?._id}>CheckOut</Link>
                   </button>
                 </div>
               </div>
-              <table className="shadow-md w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <table className="hidden md:table shadow-md w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead className=" text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" className="px-16 py-3">
                       <span className="sr-only">Image</span>
@@ -131,9 +131,10 @@ function Cart() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="mt-11 flex-wrap justify-center ">
+                <tbody className="hidden md:table-row-group mt-11 w-full flex-wrap justify-center ">
                   {cartDetails?.products?.map((p) => (
                     <CartItem
+                      key={p._id}
                       deleteItemFromCart={deleteItemFromCart}
                       UpdateQon={UpdateQon}
                       count={p.count}
@@ -143,16 +144,41 @@ function Cart() {
                   ))}
                 </tbody>
               </table>
-              <div className="text-center my-4 flex justify-center">
+              {/*  نسخة الموبايل */}
+              <div className="md:hidden flex flex-col gap-4 mt-4">
+                {cartDetails?.products?.map((item) => (
+                  <CartItem
+                    key={item._id}
+                    deleteItemFromCart={deleteItemFromCart}
+                    UpdateQon={UpdateQon}
+                    count={item.count}
+                    price={item.price}
+                    product={item.product}
+                    isMobile={true} // 👈 نبعث فلاغ
+                  />
+                ))}
+              </div>
+
+              <div className="md:hidden flex flex-col justify-between w-full items-center mt-5">
+                <div className=" font-mono md:text-2xl py-3 px-10 ">
+                  total price:{" "}
+                  <span className="text-green-600 w-full">
+                    {cartDetails?.totalCartPrice}
+                  </span>
+                </div>
+                <div className="">
+                  <button className="bg-green-600 text-clip font-serif text-lg rounded-md px-7 py-3 text-white">
+                    <Link to={"/checkout/" + cartDetails?._id}>CheckOut</Link>
+                  </button>
+                </div>
+              </div>
+              <div className="text-center  flex justify-center">
                 <button
                   onClick={deleteAllItem}
                   className="flex items-center mt-5 border p-2 rounded-lg shadow-lg shadow-slate-300 border-spacing-5"
                 >
-                  <FaTrashCan className= "hover:scale-125 duration-200 text-red-600 me-2 inline-block mx-1" />
-                  <h4 className="font-semibold text-lg">
-                    {" "}
-                    Clear Your Cart
-                  </h4>
+                  <FaTrashCan className="hover:scale-125 duration-200 text-red-600 me-2 inline-block mx-1" />
+                  <h4 className="font-semibold text-lg"> Clear Your Cart</h4>
                 </button>
               </div>
             </div>

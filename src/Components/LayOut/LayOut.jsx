@@ -18,6 +18,7 @@ function LayOut() {
         <Outlet  />
        
       </div>
+      <Footer />
     </>
   );
 }
