@@ -11,7 +11,7 @@ import { UserContext } from "../../Context/UserContext";
 //!
 
 function Login() {
-  const { setToken } = useContext(UserContext);
+  const {token ,setToken } = useContext(UserContext);
   // !register
   const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -27,17 +27,16 @@ function Login() {
 
   const navigate = useNavigate();
   const formik = useFormik({
-    //! init
+
     initialValues: {
       email: "",
       password: "",
     },
 
-    //! OnSubmit formik.errors {}
+
     onSubmit: handleSubmit,
 
-    // validateOnMount: true ,
-    //! validation
+
 
     //! YUP
     validationSchema: schema,

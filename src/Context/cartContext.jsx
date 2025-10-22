@@ -10,12 +10,12 @@ export default function CartContextProvider({ children }) {
   const headers = {
     token,
   };
-  console.log(token);
+  // console.log(token);
 
   function getUseCart() {
     return axios
       .get("https://ecommerce.routemisr.com/api/v1/cart", {
-        headers: headers,
+        headers: { token: localStorage.getItem("token") },
       })
 
       .then((data) => {
@@ -27,7 +27,7 @@ export default function CartContextProvider({ children }) {
   function getWishList() {
     return axios
       .get("https://ecommerce.routemisr.com/api/v1/wishlist", {
-        headers: headers,
+        headers: { token: localStorage.getItem("token") },
       })
 
       .then((data) => {
@@ -45,7 +45,7 @@ export default function CartContextProvider({ children }) {
           productId: pId,
         },
         {
-          headers: headers,
+          headers: { token: localStorage.getItem("token") },
         }
       )
       .then((data) => {
@@ -62,7 +62,7 @@ export default function CartContextProvider({ children }) {
           productId: pId,
         },
         {
-          headers: headers,
+          headers: { token: localStorage.getItem("token") },
         }
       )
       .then((data) => {
@@ -80,7 +80,7 @@ export default function CartContextProvider({ children }) {
           count: count,
         },
         {
-          headers: headers,
+          headers: { token: localStorage.getItem("token") },
         }
       )
       .then((data) => {
@@ -103,7 +103,7 @@ export default function CartContextProvider({ children }) {
   function deleteWishList(id) {
     return axios
       .delete("https://ecommerce.routemisr.com/api/v1/wishlist/" + id, {
-        headers: headers,
+        headers: { token: localStorage.getItem("token") },
       })
       .then((data) => {
         setWishListNum(data.data.data.length);
@@ -114,7 +114,7 @@ export default function CartContextProvider({ children }) {
   function deleteAllProduct() {
     return axios
       .delete("https://ecommerce.routemisr.com/api/v1/cart", {
-        headers: headers,
+        headers: { token: localStorage.getItem("token") },
       })
       .then((data) => {
         setCartItem(data.data.numOfCartItems);
@@ -131,7 +131,7 @@ export default function CartContextProvider({ children }) {
           shippingAddress: shippingAddress,
         },
         {
-          headers,
+          headers: { token: localStorage.getItem("token") },
         }
       )
       .then((data) => data)
